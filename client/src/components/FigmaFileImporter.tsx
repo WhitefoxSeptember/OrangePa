@@ -359,4 +359,3 @@ const FigmaFileImporter: React.FC = () => {
 };
 
 export default FigmaFileImporter;
-
