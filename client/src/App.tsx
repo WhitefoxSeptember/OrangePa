@@ -5,4 +5,4 @@ function App() {
   return <AnalyzePanel />
 }
 
-export default App
+export default App;

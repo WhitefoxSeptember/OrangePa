@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useFigma from '../hooks/useFigma';
 import type { FigmaFile, FigmaNode } from '../services/figmaApi';
 import { extractFileKeyFromUrl, isValidFileKey, generateFigmaFileUrl } from '../utils/figmaUtils';
+import { importFigmaData } from '../utils/figmaDataUtils';
 import FigmaOAuthService from '../services/figmaOAuth';
 import './FigmaConnector.css';
 
@@ -9,7 +10,6 @@ const FigmaConnector: React.FC = () => {
   const [selectedTeamId, setSelectedTeamId] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState('');
   const [selectedFileKey, setSelectedFileKey] = useState('');
-  const [fileData, setFileData] = useState<any>(null);
   const [commentMessage, setCommentMessage] = useState('');
   const [commentPosition, setCommentPosition] = useState({ x: 0, y: 0 });
   const [fileUrlInput, setFileUrlInput] = useState('');
@@ -18,6 +18,10 @@ const FigmaConnector: React.FC = () => {
 
   const oauthService = FigmaOAuthService.getInstance();
   const accessToken = oauthService.getAccessToken();
+  
+  // Local state for formatted data
+  const [formattedFile, setFormattedFile] = useState<any>(null);
+  const [selectedNodes, setSelectedNodes] = useState<any[]>([]);
 
   const {
     figmaService,
@@ -51,7 +55,7 @@ const FigmaConnector: React.FC = () => {
     setSelectedTeamId(teamId);
     setSelectedProjectId('');
     setSelectedFileKey('');
-    setFileData(null);
+    setSelectedNodes([]);
     if (teamId) {
       await refreshProjects(teamId);
     }
@@ -60,7 +64,7 @@ const FigmaConnector: React.FC = () => {
   const handleProjectSelect = async (projectId: string) => {
     setSelectedProjectId(projectId);
     setSelectedFileKey('');
-    setFileData(null);
+    setSelectedNodes([]);
     if (projectId) {
       await refreshFiles(projectId);
     }
@@ -70,7 +74,10 @@ const FigmaConnector: React.FC = () => {
     setSelectedFileKey(fileKey);
     if (fileKey) {
       const file = await getFile(fileKey);
-      setFileData(file);
+      if (file) {
+        const formatted = importFigmaData(file);
+        setFormattedFile(formatted);
+      }
     }
   };
 
@@ -265,22 +272,61 @@ const FigmaConnector: React.FC = () => {
         </div>
 
         <div className="content">
-          {fileData ? (
-            <div className="file-viewer">
-              <h3>{fileData.name}</h3>
-              <div className="file-info">
-                <p><strong>Version:</strong> {fileData.version}</p>
-                <p><strong>Last Modified:</strong> {new Date(fileData.lastModified).toLocaleString()}</p>
+          {formattedFile ? (
+            <div className="file-data-display">
+              <h3>📊 Figma File Data</h3>
+              <div className="file-summary">
+                <h4>File Summary</h4>
+                <p><strong>Name:</strong> {formattedFile.name}</p>
+                <p><strong>Version:</strong> {formattedFile.version}</p>
+                <p><strong>Last Modified:</strong> {formattedFile.lastModified}</p>
+                <p><strong>Pages:</strong> {formattedFile.summary.totalPages}</p>
+                <p><strong>Total Nodes:</strong> {formattedFile.summary.totalNodes}</p>
+                <p><strong>Components:</strong> {formattedFile.summary.totalComponents}</p>
+                <p><strong>Styles:</strong> {formattedFile.summary.totalStyles}</p>
               </div>
               
-              <div className="node-tree">
-                <h4>Document Structure</h4>
-                {renderNodeTree(fileData.document)}
+              <div className="data-export">
+                <h4>📥 Export Data</h4>
+                <button 
+                  onClick={() => {
+                    const dataStr = JSON.stringify(formattedFile, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${formattedFile.name.replace(/\s+/g, '_')}_data.json`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="export-btn"
+                >
+                  📄 Download JSON
+                </button>
+                <button 
+                  onClick={() => {
+                    console.log('Figma Data:', formattedFile);
+                    alert('Data logged to console!');
+                  }}
+                  className="log-btn"
+                >
+                  📋 Log to Console
+                </button>
+              </div>
+              
+              <div className="json-preview">
+                <h4>🔍 Data Preview</h4>
+                <details>
+                  <summary>Click to expand JSON preview</summary>
+                  <pre className="json-content">
+                    {JSON.stringify(formattedFile, null, 2)}
+                  </pre>
+                </details>
               </div>
             </div>
           ) : (
-            <div className="placeholder">
-              <p>Select a file to view its contents</p>
+            <div className="no-file-selected">
+              <p>Select a Figma file to view formatted data</p>
             </div>
           )}
         </div>
