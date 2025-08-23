@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import FigmaApiService, { 
-  FigmaFileResponse, 
-  FigmaFile, 
-  FigmaProject, 
-  FigmaTeam 
+  type FigmaFileResponse, 
+  type FigmaFile, 
+  type FigmaProject, 
+  type FigmaTeam 
 } from '../services/figmaApi';
 
 interface UseFigmaOptions {
