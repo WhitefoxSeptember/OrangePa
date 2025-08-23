@@ -1,8 +1,8 @@
 import './App.css'
-import Main from './pages/Main'
+import AnalyzePanel from './components/AnalyzePanel'
 
 function App() {
-  return <Main />
+  return <AnalyzePanel />
 }
 
 export default App

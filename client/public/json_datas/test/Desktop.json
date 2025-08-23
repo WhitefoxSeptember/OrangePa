@@ -1,0 +1,82 @@
+{
+    "$comment": "This is structural design data exported by the Figma Raw plugin. It is formatted to help LLMs (Large Language Models) understand design structures and components from Figma designs.",
+    "name": "Desktop",
+    "type": "GROUP",
+    "width": 2041,
+    "height": 427,
+    "children": [
+        {
+            "name": "Rectangle 270",
+            "type": "RECTANGLE",
+            "width": 2041,
+            "height": 427,
+            "fills": [
+                {
+                    "type": "SOLID",
+                    "opacity": 1,
+                    "color": {
+                        "r": 1,
+                        "g": 1,
+                        "b": 1,
+                        "a": 1,
+                        "hex": "#ffffff"
+                    }
+                }
+            ],
+            "strokeWeight": 1,
+            "strokeAlign": "INSIDE",
+            "strokeCap": "NONE",
+            "strokeJoin": "MITER"
+        },
+        {
+            "name": "Desktop - 1440 px",
+            "type": "TEXT",
+            "width": 1780,
+            "height": 258,
+            "fills": [
+                {
+                    "type": "SOLID",
+                    "opacity": 1,
+                    "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1,
+                        "hex": "#000000"
+                    }
+                }
+            ],
+            "strokeWeight": 1,
+            "strokeAlign": "OUTSIDE",
+            "strokeCap": "NONE",
+            "strokeJoin": "MITER",
+            "characters": "Desktop - 1440 px ",
+            "fontSize": 220,
+            "fontName": {
+                "family": "Roboto",
+                "style": "Medium"
+            },
+            "fontWeight": 500,
+            "letterSpacing": {
+                "unit": "PERCENT",
+                "value": 0
+            },
+            "lineHeight": {
+                "unit": "AUTO"
+            },
+            "textAlignHorizontal": "LEFT",
+            "textAlignVertical": "TOP",
+            "textAutoResize": "WIDTH_AND_HEIGHT",
+            "textCase": "ORIGINAL",
+            "textDecoration": "NONE"
+        }
+    ],
+    "textContent": [
+        {
+            "name": "Desktop - 1440 px",
+            "text": "Desktop - 1440 px ",
+            "path": "Desktop/Desktop - 1440 px",
+            "nodeType": "TEXT"
+        }
+    ]
+}
