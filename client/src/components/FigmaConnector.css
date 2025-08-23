@@ -244,7 +244,43 @@
 
 /* URL Input */
 .url-input-group {
+  display: flex;
+  gap: 10px;
   margin-bottom: 10px;
+  align-items: center;
+}
+
+.url-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.import-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.import-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.import-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .url-input {
@@ -415,11 +451,62 @@
   background: #5a6268;
 }
 
-.json-preview {
+.json-renderer {
   background: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
   border-left: 4px solid #ffc107;
+}
+
+.json-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.toggle-json-btn, .copy-json-btn {
+  background: #ffc107;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.toggle-json-btn:hover {
+  background: #e0a800;
+}
+
+.copy-json-btn {
+  background: #17a2b8;
+  color: white;
+}
+
+.copy-json-btn:hover {
+  background: #138496;
+}
+
+.json-container {
+  background: #2d3748;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.json-content {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 15px;
+  border-radius: 6px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  max-height: 500px;
+  overflow-y: auto;
+  margin: 0;
 }
 
 .json-preview h4 {
@@ -452,7 +539,43 @@
   text-align: center;
   padding: 60px 20px;
   color: #6c757d;
-  font-size: 18px;
+}
+
+.no-file-selected h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.no-file-selected p {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.example-url {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.example-url h4 {
+  color: #495057;
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.example-url code {
+  background: #e9ecef;
+  color: #495057;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 12px;
+  display: block;
+  word-break: break-all;
 }
 
 /* Responsive Design */

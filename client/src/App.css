@@ -39,6 +39,8 @@
   font-size: 0.9rem;
 }
 
+/* App-specific styles can go here */
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-header h1 {
@@ -51,6 +53,27 @@
   
   .app-main {
     padding: 0 10px 20px;
+  }
+  
+  .importer-container {
+    padding: 10px;
+  }
+  
+  .url-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .import-btn {
+    min-width: auto;
+  }
+  
+  .control-buttons {
+    flex-direction: column;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
   }
 }
 

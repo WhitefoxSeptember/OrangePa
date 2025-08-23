@@ -1,0 +1,348 @@
+/* Figma File Importer Container */
+.figma-importer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Token Input Section */
+.token-input-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.token-input-section h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.token-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.token-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.token-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.token-help {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.token-help a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.token-help a:hover {
+  text-decoration: underline;
+}
+
+.test-connection-btn {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.test-connection-btn:hover:not(:disabled) {
+  background: #218838;
+}
+
+.test-connection-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+/* URL Input Section */
+.url-input-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.url-input-section h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.url-input-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.url-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.import-btn {
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.import-btn:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.import-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.url-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #f5c6cb;
+}
+
+.url-help {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.url-help h4 {
+  margin: 0 0 8px 0;
+  color: #495057;
+}
+
+.example-urls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.example-urls code {
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+/* JSON Display */
+.json-display {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.json-display h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 22px;
+}
+
+/* File Summary */
+.file-summary {
+  margin-bottom: 24px;
+}
+
+.file-summary h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 18px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.summary-item .label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.summary-item .value {
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* JSON Controls */
+.json-controls {
+  margin-bottom: 20px;
+}
+
+.json-controls h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 18px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn, .copy-btn, .download-btn {
+  padding: 10px 20px;
+  border: 2px solid #e9ecef;
+  background: white;
+  color: #495057;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover, .copy-btn:hover, .download-btn:hover {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.copy-btn {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.copy-btn:hover {
+  background: #28a745;
+  color: white;
+}
+
+.download-btn {
+  border-color: #17a2b8;
+  color: #17a2b8;
+}
+
+.download-btn:hover {
+  background: #17a2b8;
+  color: white;
+}
+
+/* JSON Content */
+.json-content {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  overflow-x: auto;
+}
+
+.json-text {
+  margin: 0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* No File State */
+.no-file {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.no-file h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.no-file p {
+  margin: 0 0 24px 0;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.features h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 18px;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.features li {
+  padding: 8px 0;
+  color: #6c757d;
+  position: relative;
+  padding-left: 24px;
+}
+
+.features li:before {
+  content: '✨';
+  position: absolute;
+  left: 0;
+  color: #007bff;
+}
