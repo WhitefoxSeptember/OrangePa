@@ -129,6 +129,10 @@ app.post('/api/figma/oauth/refresh', async (req, res) => {
   }
 });
 
+// File analysis routes
+const fileAnalysisRouter = require('./router/file_analysis');
+app.use('/api/file-analysis', fileAnalysisRouter);
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
