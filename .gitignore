@@ -15,6 +15,9 @@ yarn-debug.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Server Node.js
+server/node_modules/
+
 # Runtime data
 pids
 *.pid
