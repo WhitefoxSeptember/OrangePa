@@ -21,7 +21,7 @@ const processFileWithOpenAI = async (filePath, fileName, pageType = "banking app
       const openaiResponse = await axios.post("https://api.openai.com/v1/chat/completions", {
         model: "gpt-4.1",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 4000,
+        max_tokens: 30000,
         temperature: 0.7,
       }, {
         headers: {
@@ -40,18 +40,30 @@ const processFileWithOpenAI = async (filePath, fileName, pageType = "banking app
       };
 
     } catch (err) {
+      // Extract token count from failed request if available
+      const failedTokens = err.response?.data?.usage?.total_tokens || 0;
+      
       retryCount++;
       if (err.response?.status === 429 || err.response?.status === 402) {
-        if (retryCount < maxRetries) {
-          console.log(`Rate limit hit, retrying in 30 seconds... (attempt ${retryCount}/${maxRetries})`);
-          await new Promise(resolve => setTimeout(resolve, 30000));
-          continue;
-        }
+        console.log(`Rate limit hit for ${fileName}, skipping file. Tokens used: ${failedTokens}`);
+        return {
+          filename: fileName,
+          response: null,
+          totalTokens: failedTokens,
+          skipped: true,
+          reason: 'rate_limit'
+        };
       }
       
       if (retryCount >= maxRetries) {
         console.log(`Failed to process ${fileName} after ${maxRetries} attempts:`, err.message);
-        return null;
+        return {
+          filename: fileName,
+          response: null,
+          totalTokens: failedTokens,
+          skipped: true,
+          reason: 'max_retries_exceeded'
+        };
       }
       await new Promise(resolve => setTimeout(resolve, 30000));
     }
@@ -111,40 +123,53 @@ const analyzeBatch = async (req, res) => {
 
       const result = await processFileWithOpenAI(filePath, fileName, pageType);
       if (result) {
-        let analysisData;
-        try {
-          // Try to parse the OpenAI response as JSON
-          analysisData = JSON.parse(result.response);
-        } catch {
-          // If parsing fails, create a structured object with the raw response
-          analysisData = {
-            page_name: fileName.replace('.json', ''),
-            purpose: "Analysis could not be parsed as JSON",
-            raw_response: result.response
-          };
-        }
-        
-        results.push({
-          filename: fileName,
-          analysis: analysisData,
-          tokens: result.totalTokens || 0
-        });
-        
-        // Save individual file analysis in folder structure
-        const folderPath = path.join(projectDataDir, folderName);
-        if (!fs.existsSync(folderPath)) {
-          fs.mkdirSync(folderPath, { recursive: true });
-        }
-        
-        const individualFileName = fileName; // Keep original filename
-        const individualFilePath = path.join(folderPath, individualFileName);
-        // Save the parsed JSON object directly, not as a string
-        fs.writeFileSync(individualFilePath, JSON.stringify(analysisData, null, 2));
-        
+        // Always count tokens, even for skipped files
         totalTokensUsed += result.totalTokens || 0;
         tokenBudgetUsed += result.totalTokens || 0;
+        
+        if (result.skipped) {
+          skippedFiles.push({
+            filename: fileName,
+            reason: result.reason,
+            tokens: result.totalTokens || 0
+          });
+        } else {
+          let analysisData;
+          try {
+            // Try to parse the OpenAI response as JSON
+            analysisData = JSON.parse(result.response);
+          } catch {
+            // If parsing fails, create a structured object with the raw response
+            analysisData = {
+              page_name: fileName.replace('.json', ''),
+              purpose: "Analysis could not be parsed as JSON",
+              raw_response: result.response
+            };
+          }
+          
+          results.push({
+            filename: fileName,
+            analysis: analysisData,
+            tokens: result.totalTokens || 0
+          });
+          
+          // Save individual file analysis in folder structure
+          const folderPath = path.join(projectDataDir, folderName);
+          if (!fs.existsSync(folderPath)) {
+            fs.mkdirSync(folderPath, { recursive: true });
+          }
+          
+          const individualFileName = fileName; // Keep original filename
+          const individualFilePath = path.join(folderPath, individualFileName);
+          // Save the parsed JSON object directly, not as a string
+          fs.writeFileSync(individualFilePath, JSON.stringify(analysisData, null, 2));
+        }
       } else {
-        skippedFiles.push(fileName);
+        skippedFiles.push({
+          filename: fileName,
+          reason: 'processing_failed',
+          tokens: 0
+        });
       }
     }
 
