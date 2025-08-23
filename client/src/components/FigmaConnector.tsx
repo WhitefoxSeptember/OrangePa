@@ -22,6 +22,7 @@ const FigmaConnector: React.FC = () => {
   // Local state for formatted data
   const [formattedFile, setFormattedFile] = useState<any>(null);
   const [selectedNodes, setSelectedNodes] = useState<any[]>([]);
+  const [jsonExpanded, setJsonExpanded] = useState(false);
 
   const {
     figmaService,
@@ -223,19 +224,26 @@ const FigmaConnector: React.FC = () => {
           )}
 
           <div className="section">
-            <h3>Open File by URL</h3>
+            <h3>Import Figma File by URL</h3>
             <div className="url-input-group">
               <input
                 type="text"
                 value={fileUrlInput}
-                onChange={(e) => handleFileUrlInput(e.target.value)}
+                onChange={(e) => setFileUrlInput(e.target.value)}
                 placeholder="Paste Figma file URL or file key"
                 className="url-input"
               />
-              {fileUrlError && <div className="url-error">{fileUrlError}</div>}
+              <button 
+                onClick={() => handleFileUrlInput(fileUrlInput)}
+                disabled={!fileUrlInput.trim() || !isConnected}
+                className="import-btn"
+              >
+                🚀 Import File
+              </button>
             </div>
+            {fileUrlError && <div className="url-error">{fileUrlError}</div>}
             <p className="url-help">
-              You can paste a Figma file URL or directly enter a file key
+              Paste a Figma file URL (e.g., https://www.figma.com/design/...) or enter a file key
             </p>
           </div>
 
@@ -275,17 +283,43 @@ const FigmaConnector: React.FC = () => {
           {formattedFile ? (
             <div className="file-data-display">
               <h3>📊 Figma File Data</h3>
+              
+              {/* File Summary */}
               <div className="file-summary">
                 <h4>File Summary</h4>
-                <p><strong>Name:</strong> {formattedFile.name}</p>
-                <p><strong>Version:</strong> {formattedFile.version}</p>
-                <p><strong>Last Modified:</strong> {formattedFile.lastModified}</p>
-                <p><strong>Pages:</strong> {formattedFile.summary.totalPages}</p>
-                <p><strong>Total Nodes:</strong> {formattedFile.summary.totalNodes}</p>
-                <p><strong>Components:</strong> {formattedFile.summary.totalComponents}</p>
-                <p><strong>Styles:</strong> {formattedFile.summary.totalStyles}</p>
+                <div className="summary-grid">
+                  <div className="summary-item">
+                    <span className="summary-label">Name:</span>
+                    <span className="summary-value">{formattedFile.name}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="summary-label">Version:</span>
+                    <span className="summary-value">{formattedFile.version}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="summary-label">Last Modified:</span>
+                    <span className="summary-value">{formattedFile.lastModified}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="summary-label">Pages:</span>
+                    <span className="summary-value">{formattedFile.summary.totalPages}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="summary-label">Total Nodes:</span>
+                    <span className="summary-value">{formattedFile.summary.totalNodes}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="summary-label">Components:</span>
+                    <span className="summary-value">{formattedFile.summary.totalComponents}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span className="summary-label">Styles:</span>
+                    <span className="summary-value">{formattedFile.summary.totalStyles}</span>
+                  </div>
+                </div>
               </div>
               
+              {/* Data Export */}
               <div className="data-export">
                 <h4>📥 Export Data</h4>
                 <button 
@@ -314,19 +348,44 @@ const FigmaConnector: React.FC = () => {
                 </button>
               </div>
               
-              <div className="json-preview">
-                <h4>🔍 Data Preview</h4>
-                <details>
-                  <summary>Click to expand JSON preview</summary>
-                  <pre className="json-content">
-                    {JSON.stringify(formattedFile, null, 2)}
-                  </pre>
-                </details>
+              {/* JSON Renderer */}
+              <div className="json-renderer">
+                <h4>🔍 JSON Data</h4>
+                <div className="json-controls">
+                  <button 
+                    onClick={() => setJsonExpanded(!jsonExpanded)}
+                    className="toggle-json-btn"
+                  >
+                    {jsonExpanded ? '📁 Collapse JSON' : '📂 Expand JSON'}
+                  </button>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(JSON.stringify(formattedFile, null, 2));
+                      alert('JSON copied to clipboard!');
+                    }}
+                    className="copy-json-btn"
+                  >
+                    📋 Copy JSON
+                  </button>
+                </div>
+                
+                {jsonExpanded && (
+                  <div className="json-container">
+                    <pre className="json-content">
+                      {JSON.stringify(formattedFile, null, 2)}
+                    </pre>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
             <div className="no-file-selected">
-              <p>Select a Figma file to view formatted data</p>
+              <h3>🎨 Figma File Importer</h3>
+              <p>Use the URL input above to import a Figma file and view its data as JSON.</p>
+              <div className="example-url">
+                <h4>Example URL:</h4>
+                <code>https://www.figma.com/design/tNvw9yTMvBNwPKRJmsTfBNwPKRJmsTfYC/QUASQ-3D---Landing-Page</code>
+              </div>
             </div>
           )}
         </div>
